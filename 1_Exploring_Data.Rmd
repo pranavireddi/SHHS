@@ -1,31 +1,97 @@
 ---
-title: "First Look at Data"
-output: 
-  html_document:
-    toc: true
-    keep_md: true
+title: 'Exploring_Data.Rmd'
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 ```
 
-## R Markdown
+## Reading the Data
+We are interested in studying... so we will be making a plot for this.
+```{r, include=FALSE}
+setwd("/Users/pranavireddi/Documents/GitHub/SHHS")
+data <- read.csv("first-shhs-dataset.csv")
+dim(data)
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+library(ggplot2)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+summary(data$gender)
+data$gender <- as.factor(data$gender)
+summary(data$gender)
 
-```{r cars}
-summary(cars)
+levels(data$gender) <- c("male", "female")
+
+
+
+neck_width <- data$NECK20
+bmi <- data$bmi_s1
+hip <- data$Hip
+gender <- data$gender
+
+age <- data$age_s1
+oxygen_saturation <- data$avgsat
+sleep_to_awake <- data$SlptAwP
+time_in_bed <- data$TimeBedP
+ankle_bp <- data$AnkBP
+cholesterol <- data$Chol
+triglycerides <- data$Trig
+apnea_sleep_time <- data$pctSTApn
+data$sleep_efficiency <- data$SlpEffP
+atrial_fibrillation <- data$AFIB
+height <- data$height
+
+vars <- c("neck_width", "bmi", "hip", "gender", "age", "oxygen_saturation", "sleep_to_awake", "time_in_bed", "ankle_bp", "cholesterol", "triglycerides", "apnea_sleep_time", "sleep_efficiency", "atrial_fibrillation", "height")
+
 ```
 
-## Including Plots
+## Histogram Plots
 
-You can also embed plots, for example:
+Below are the histogram and general plots for the bmi variable using ggplot.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r neck20, echo=FALSE}
+ggplot(data, aes(x=bmi)) + 
+  geom_histogram(nwidth=3, fill="#E69597", color="#E69597", alpha=0.9) +      
+  theme(panel.background = element_rect(fill = "#B5D6D6", colour = "#B5D6D6", size   = 0.5, linetype = "solid")) +
+      ggtitle("Histogram") +
+      xlab("BMI") + ylab("Count")
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Overlaid Histogram Plots
+
+Below are the overlaid histogram and general plots for the bmi variable and gender using ggplot.
+
+```{r overlaid_plot, echo=FALSE}
+ggplot(data, aes(x=bmi, color=gender, fill=gender)) + 
+  geom_histogram(position="identity", alpha = 0.5) + 
+  
+    ggtitle("Overlaid Histogram") +
+     xlab("BMI") + ylab("Count")
+
+  theme(panel.background = element_rect(fill = "#B5D6D6", colour = "#B5D6D6", size        = 0.5, linetype = "solid")) 
+```
+
+## Boxplots
+
+Below are the boxplots for the bmi variable and gender using ggplot.
+
+```{r boxplot, echo=FALSE}
+ggplot(data, aes(x=bmi, y=gender, color = gender, fill = gender)) + 
+  geom_boxplot(position="identity") +
+    ggtitle("Boxplot") +
+      xlab("BMI") + ylab("Gender")
+
+```
+
+## Violin Plots
+
+Below are the violin plots for the bmi variable and gender using ggplot.
+
+```{r violin_plot, echo=FALSE}
+ggplot(data, aes(x=bmi, y=gender, color = gender, fill = gender)) + 
+  geom_violin(position="identity")+ 
+    ggtitle("Violin Plot")+
+      xlab("BMI")+ ylab("Gender")
+
+```

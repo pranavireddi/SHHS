@@ -1,0 +1,352 @@
+---
+title: 'Original Work - Sleep Phenotypes Breakdown by Gender'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+# Reading the Data
+We are interested in studying the various sleep phenotypes and their breakdowns in the different genders. We will be using data visualization strategies, specifically with overlaid histograms, to observe and analyze the data. Below are the subsequent plots. Overlaid histograms present the best possible visualization opportunity by presenting the frequency of a certain phenotype as well as effectively representing the gender differences for the data collected. Density plots were also created in order ot provide a more holistic visualization of the overall data distribution.
+
+# Histograms
+
+```{r, include=FALSE}
+setwd("/Users/pranavireddi/Documents/GitHub/SHHS")
+data <- read.csv("first-shhs-dataset.csv")
+dim(data)
+
+library(ggplot2)
+
+summary(data$gender)
+data$gender <- as.factor(data$gender)
+summary(data$gender)
+
+levels(data$gender) <- c("male", "female")
+
+
+trouble_sleeping <- data$TFA02
+waking_early <- data$WU2EM02
+frequency_waking <- data$WUDNRS02
+rdi <- data$rdi3p
+epworth_score <- data$ESS_s1
+data$sleep_efficiency <- data$SlpEffP
+leg_cramps <- data$LegCrp02
+
+
+
+neck_width <- data$NECK20
+bmi <- data$bmi_s1
+hip <- data$Hip
+gender <- data$gender
+age <- data$age_s1
+oxygen_saturation <- data$avgsat
+sleep_to_awake <- data$SlptAwP
+time_in_bed <- data$TimeBedP
+ankle_bp <- data$AnkBP
+cholesterol <- data$Chol
+triglycerides <- data$Trig
+apnea_sleep_time <- data$pctSTApn
+atrial_fibrillation <- data$AFIB
+height <- data$height
+
+vars <- c("neck_width", "bmi", "hip", "gender", "age", "oxygen_saturation", "sleep_to_awake", "time_in_bed", "ankle_bp", "cholesterol", "triglycerides", "apnea_sleep_time", "sleep_efficiency", "atrial_fibrillation", "height", "trouble_sleeping", "waking_early", "frequency_waking", "rdi", "epworth_score", "leg_cramps")
+
+```
+
+## Histogram Plot - Trouble Sleeping
+
+Below is the histogram for the trouble sleeping variable. This variable looks at the frequency of trouble falling asleep for the participants of the study. 
+
+The question posed to the subjects was: How often do you have trouble falling asleep?
+
+The recorded results were from 1 - 5.
+
+-- 1 - Never (0)
+
+-- 2 - Rarely (1x/month or less)
+
+-- 3 - Sometimes (2-4x/month)
+
+-- 4 - Often (5-15x/month)
+
+-- 5 - Almost Always (16 - 30x/month)
+
+```{r overlaid_plot_trouble_sleeping, echo=FALSE}
+ggplot(data, aes(x=trouble_sleeping, color=gender, fill=gender)) + 
+  geom_histogram(position="identity", alpha = 0.50) + 
+  
+    ggtitle("Overlaid Histogram for Trouble Sleeping") +
+     xlab("Frequency of Trouble Sleeping") + ylab("Count") +
+  
+
+  theme(panel.background = element_rect(fill = "#edf6f9", colour = "#edf6f9", size        = 1.0, linetype = "solid")) 
+```
+
+## Histogram Plot - Waking Early
+
+Below is the histogram for the waking up early variable. This variable looks at the frequency of waking up early and not being able to fall back to sleep again. 
+
+The question posed to the subjects was: How often do you wake up too early in the morning and are unable to resume sleep?
+
+The recorded results were from 1 - 5.
+
+-- 1 - Never (0)
+
+-- 2 - Rarely (1x/month or less)
+
+-- 3 - Sometimes (2-4x/month)
+
+-- 4 - Often (5-15x/month)
+
+-- 5 - Almost Always (16 - 30x/month)
+
+```{r overlaid_plot_waking_early, echo=FALSE}
+ggplot(data, aes(x=waking_early, color=gender, fill=gender)) + 
+  geom_histogram(position="identity", alpha = 0.5) + 
+  
+    ggtitle("Overlaid Histogram for Waking Early") +
+     xlab("Frequency of Waking Early") + ylab("Count") +
+
+  theme(panel.background = element_rect(fill = "#edf6f9", colour = "#edf6f9", size        = 0.5, linetype = "solid")) 
+```
+
+## Histogram Plot - Respiratory Disturbance Index
+
+Below is the histogram for the Overall Respiratory Disturbance Index (RDI) at >=3% oxygen desaturation. 
+
+This value was calculated through the use of the following formula: 
+
+rdi3p = 60 * ( hrembp3 + hrop3 + hnrbp3 + hnrop3 + carbp3 + carop3 + canbp3 + canop3 + oarbp3 + oarop3 + oanbp3 + oanop3 ) / slpprdp
+
+
+```{r overlaid_plot_rdi3p, echo=FALSE}
+ggplot(data, aes(x=rdi, color=gender, fill=gender)) + 
+  geom_histogram(position="identity", alpha = 0.5) + 
+  
+    ggtitle("Overlaid Histogram for Respiratory Disturbance Index") +
+     xlab("Respiratory Disturbance Index Score") + ylab("Count") +
+
+  theme(panel.background = element_rect(fill = "#edf6f9", colour = "#edf6f9", size        = 0.5, linetype = "solid")) 
+```
+
+## Histogram Plot - Epworth Sleepiness Scale Score
+
+Below is the histogram for the Epworth Sleepiness Scale score. This is an 8-question survey used to analyze the sleep patterns of subjects. 
+
+This value was calculated through the use of the following Epworth forumla. (Additional Notes: Scale 0-3 for individual items; 0 to 24 for overall score.)
+
+
+```{r overlaid_plot_epworth_score, echo=FALSE}
+ggplot(data, aes(x=epworth_score, color=gender, fill=gender)) + 
+  geom_histogram(position="identity", alpha = 0.5) + 
+  
+    ggtitle("Overlaid Histogram for Epworth Sleepiness Score") +
+     xlab("Epworth Sleepiness Score") + ylab("Count") +
+
+  theme(panel.background = element_rect(fill = "#edf6f9", colour = "#edf6f9", size        = 0.5, linetype = "solid")) 
+```
+
+## Histogram Plot - Sleep Efficiency
+
+Below is the histogram for the overall Sleep Efficiency values for subjects.Sleep efficiency is the percent of the time spent asleep while in bed. 
+
+This value was calculated through the use of the following formula. This was found by dividing the amount of time spent asleep by the total amount of time in bed.
+
+
+```{r overlaid_plot_sleep_efficiency, echo=FALSE}
+ggplot(data, aes(x=sleep_efficiency, color=gender, fill=gender)) + 
+  geom_histogram(position="identity", alpha = 0.5) + 
+  
+    ggtitle("Overlaid Histogram for Sleep Efficiency") +
+     xlab("Sleep Efficiency Score") + ylab("Count") +
+
+  theme(panel.background = element_rect(fill = "#edf6f9", colour = "#edf6f9", size        = 0.5, linetype = "solid")) 
+```
+
+## Histogram Plot - Leg Cramps
+
+Below is the histogram for the frequency of leg cramps/jerks waking up subjects.
+
+The question posed to the subjects was: In the past year, how often, on average, have you been awakened with leg cramps or leg jerks? 
+
+The recorded results were from 1 - 5.
+
+-- 1 - Never (0)
+
+-- 2 - Rarely (1x/month or less)
+
+-- 3 - Sometimes (2-4x/month)
+
+-- 4 - Often (5-15x/month)
+
+-- 5 - Almost Always (16 - 30x/month)
+
+
+```{r overlaid_plot_leg_cramps, echo=FALSE}
+ggplot(data, aes(x=leg_cramps, color=gender, fill=gender)) + 
+  geom_histogram(position="identity", alpha = 0.5) + 
+  
+    ggtitle("Overlaid Histogram for Frequency of Leg Cramps") +
+     xlab("Frequency of Leg Cramps") + ylab("Count") +
+
+  theme(panel.background = element_rect(fill = "#edf6f9", colour = "#edf6f9", size        = 0.5, linetype = "solid")) 
+```
+
+## Summary
+
+* **Histogram Plot - Trouble Sleeping:** From the data representation in the histogram for the trouble sleeping variable, it can be observed that most participants either rarely (1x/month or less)  or sometimes (2-4x/month) experience trouble sleeping. Of these categories, males have a higher frequency of experiencing this level of trouble sleeping. On the other hand, females tend to experience a higher frequency of having sometimes (2-4x/month), often (5-15x/month), or almost always (16-30x/month) having trouble sleeping. These categories, respectively, have fewer subjects in them than the previous. This data distribution appears to be approximately normal.
+
+* **Histogram Plot - Waking Early:** From the data representation in the histogram for the waking up early variable, it can be observed that most participants sometimes (2-4x/month) experience trouble sleeping. Of these categories, both males and females have an equal frequency of this experience. On the other hand, males tend to experience a slightly higher frequency of having sometimes (2-4x/month), often (5-15x/month), or almost always (16-30x/month) having trouble sleeping. These categories also, respectively, have fewer subjects in them than the previous. This data distribution appears to be approximately normal. 
+
+* **Histogram Plot - Respiratory Disturbance Index:** From the histogram representation for RDI, it can be seen that most participants had a sleep disturbance score lower than 50. Females tended to have a lower respiratory disturbance index score while males tended to have higher levels of respiratory disturbance index scores. This data distribution appears to be skewed towards the right.
+
+* **Histogram Plot - Epworth Sleepiness Scale Score:** From the histogram representation, it can be seen that most participants had an Epworth Sleepiness Score between 5 and 10. More females tended to have an Epworth score below 10 than males. More males tended to have Epworth sleep scores above 10 than females. This data distribution also appears to be slightly skewed to the right.
+
+* **Histogram Plot - Sleep Efficiency:** From the histogram representation for this variable, it can be observed that most participants had a sleep efficiency score of around 90. The average normal/healthy sleep efficiency score is 85. More females, on average, tended to have higher sleep efficiency scores than males. However, as the sleep efficiency scores decreased, there was a higher frequency of males present. This data distribution also appears to be skewed to the left.
+
+* **Histogram Plot - Leg Cramps:** From the data distribution provided by the histogram, it can be seen that most participants never(0) or rarely (1x/month or less) experienced sleep-disturbing leg cramps. For all the data categories (never to almost always), females tended to be present in higher frequencies than males. The only exception to this was the never category where slightly more males were present.
+
+
+
+# Density Plots
+
+## Density Plot - Trouble Sleeping
+
+Below is the density plot for the trouble sleeping variable. This variable looks at the frequency of trouble falling asleep for the participants of the study. 
+
+The question posed to the subjects was: How often do you have trouble falling asleep?
+
+The recorded results were from 1 - 5.
+
+-- 1 - Never (0)
+
+-- 2 - Rarely (1x/month or less)
+
+-- 3 - Sometimes (2-4x/month)
+
+-- 4 - Often (5-15x/month)
+
+-- 5 - Almost Always (16 - 30x/month)
+
+```{r density_plot_trouble_sleeping, echo=FALSE}
+ggplot(data, aes(x=trouble_sleeping, color=gender, fill=gender)) + 
+  geom_density(position="identity", alpha = 0.50) + 
+  
+    ggtitle("Overlaid Density Plot for Trouble Sleeping") +
+     xlab("Frequency of Trouble Sleeping") + ylab("Count") +
+  
+
+  theme(panel.background = element_rect(fill = "#edf6f9", colour = "#edf6f9", size        = 1.0, linetype = "solid")) 
+```
+
+## Density Plot - Waking Early
+
+Below is the density plot for the waking up early variable. This variable looks at the frequency of waking up early and not being able to fall back to sleep again. 
+
+The question posed to the subjects was: How often do you wake up too early in the morning and are unable to resume sleep?
+
+The recorded results were from 1 - 5.
+
+-- 1 - Never (0)
+
+-- 2 - Rarely (1x/month or less)
+
+-- 3 - Sometimes (2-4x/month)
+
+-- 4 - Often (5-15x/month)
+
+-- 5 - Almost Always (16 - 30x/month)
+
+```{r density_plot_waking_early, echo=FALSE}
+ggplot(data, aes(x=waking_early, color=gender, fill=gender)) + 
+  geom_density(position="identity", alpha = 0.5) + 
+  
+    ggtitle("Overlaid Density Plot for Waking Early") +
+     xlab("Frequency of Waking Early") + ylab("Count") +
+
+  theme(panel.background = element_rect(fill = "#edf6f9", colour = "#edf6f9", size        = 0.5, linetype = "solid")) 
+```
+
+## Density Plot - Respiratory Disturbance Index
+
+Below is the density plot for the Overall Respiratory Disturbance Index (RDI) at >=3% oxygen desaturation. 
+
+This value was calculated through the use of the following formula: 
+
+rdi3p = 60 * ( hrembp3 + hrop3 + hnrbp3 + hnrop3 + carbp3 + carop3 + canbp3 + canop3 + oarbp3 + oarop3 + oanbp3 + oanop3 ) / slpprdp
+
+
+```{r density_plot_rdi3p, echo=FALSE}
+ggplot(data, aes(x=rdi, color=gender, fill=gender)) + 
+  geom_density(position="identity", alpha = 0.5) + 
+  
+    ggtitle("Overlaid Density Plot for Respiratory Disturbance Index") +
+     xlab("Respiratory Disturbance Index Score") + ylab("Count") +
+
+  theme(panel.background = element_rect(fill = "#edf6f9", colour = "#edf6f9", size        = 0.5, linetype = "solid")) 
+```
+
+## Density Plot - Epworth Sleepiness Scale Score
+
+Below is the density plot for the Epworth Sleepiness Scale score. This is an 8-question survey used to analyze the sleep patterns of subjects. 
+
+This value was calculated through the use of the following Epworth forumla. (Additional Notes: Scale 0-3 for individual items; 0 to 24 for overall score.)
+
+
+```{r density_plot_epworth_score, echo=FALSE}
+ggplot(data, aes(x=epworth_score, color=gender, fill=gender)) + 
+  geom_density(position="identity", alpha = 0.5) + 
+  
+    ggtitle("Overlaid Density Plot for Epworth Sleepiness Score") +
+     xlab("Epworth Sleepiness Score") + ylab("Count") +
+
+  theme(panel.background = element_rect(fill = "#edf6f9", colour = "#edf6f9", size        = 0.5, linetype = "solid")) 
+```
+
+## Density Plot - Sleep Efficiency
+
+Below is the density plot for the overall Sleep Efficiency values for subjects.Sleep efficiency is the percent of the time spent asleep while in bed. 
+
+This value was calculated through the use of the following formula of dividing the amount of time spent asleep by the total amount of time in bed.
+
+
+```{r density_plot_sleep_efficiency, echo=FALSE}
+ggplot(data, aes(x=sleep_efficiency, color=gender, fill=gender)) + 
+  geom_density(position="identity", alpha = 0.5) + 
+  
+    ggtitle("Overlaid Density Plot for Sleep Efficiency") +
+     xlab("Sleep Efficiency Score") + ylab("Count") +
+
+  theme(panel.background = element_rect(fill = "#edf6f9", colour = "#edf6f9", size        = 0.5, linetype = "solid")) 
+```
+
+## Density Plot - Leg Cramps
+
+Below is the density plot for the frequency of leg cramps/jerks waking up subjects.
+
+The question posed to the subjects was: In the past year, how often, on average, have you been awakened with leg cramps or leg jerks? 
+
+The recorded results were from 1 - 5.
+
+-- 1 - Never (0)
+
+-- 2 - Rarely (1x/month or less)
+
+-- 3 - Sometimes (2-4x/month)
+
+-- 4 - Often (5-15x/month)
+
+-- 5 - Almost Always (16 - 30x/month)
+
+
+```{r density_plot_leg_cramps, echo=FALSE}
+ggplot(data, aes(x=leg_cramps, color=gender, fill=gender)) + 
+  geom_density(position="identity", alpha = 0.5) + 
+  
+    ggtitle("Overlaid Density Plot for Frequency of Leg Cramps") +
+     xlab("Frequency of Leg Cramps") + ylab("Count") +
+
+  theme(panel.background = element_rect(fill = "#edf6f9", colour = "#edf6f9", size        = 0.5, linetype = "solid")) 
+```
